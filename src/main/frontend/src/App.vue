@@ -43,7 +43,7 @@
             logout() {
                 this.authenticatedUsername = '';
             }
-    };
+    }};
 </script>
 
 <style>
