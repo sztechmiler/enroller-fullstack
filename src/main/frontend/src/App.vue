@@ -4,14 +4,20 @@
       <img src="./assets/logo.svg" alt="Enroller" class="logo">
       System do zapisów na zajęcia
     </h1>
+    <button @click="loginform = true" :class="loginform ? '' : 'button-outline'">Zaloguj się</button>
+    <button @click="loginform = false" :class="loginform? 'button-outline' : ''">Zarejestruj się</button>
+    
     <div v-if="authenticatedUsername">
       <h2>Witaj {{ authenticatedUsername }}!
         <a @click="logout()" class="float-right  button-outline button">Wyloguj</a>
       </h2>
       <meetings-page :username="authenticatedUsername"></meetings-page>
     </div>
-    <div v-else>
+    <div v-else-if="loginform">
       <login-form @login="login($event)"></login-form>
+    </div>
+    <div v-else>
+      <register-form @login="register($event)"></register-form>
     </div>
   </div>
 </template>
@@ -19,13 +25,15 @@
 <script>
     import "milligram";
     import LoginForm from "./LoginForm";
+    import RegisterForm from "./RegisterForm";
     import MeetingsPage from "./meetings/MeetingsPage";
 
     export default {
-        components: {LoginForm, MeetingsPage},
+        components: {LoginForm, MeetingsPage, RegisterForm},
         data() {
             return {
-                authenticatedUsername: ""
+                authenticatedUsername: "",
+                loginform: true,
             };
         },
         methods: {
@@ -35,7 +43,6 @@
             logout() {
                 this.authenticatedUsername = '';
             }
-        }
     };
 </script>
 
