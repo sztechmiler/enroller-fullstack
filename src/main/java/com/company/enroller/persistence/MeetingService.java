@@ -1,6 +1,8 @@
 package com.company.enroller.persistence;
 
 import com.company.enroller.model.Meeting;
+
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.springframework.stereotype.Component;
 
@@ -14,11 +16,10 @@ public class MeetingService {
     public MeetingService() {
         connector = DatabaseConnector.getInstance();
     }
-
+    
     public Collection<Meeting> getAll() {
-        String hql = "FROM Meeting";
-        Query query = connector.getSession().createQuery(hql);
-        return query.list();
+        Criteria cr = connector.getSession().createCriteria(Meeting.class);
+        return cr.list();
     }
 
 
