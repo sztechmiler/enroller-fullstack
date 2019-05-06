@@ -5,10 +5,12 @@
     <label>Has≈Ço</label>
     <input type="password" v-model="user.password">
     <button type="submit" @click ="register()">{{ labelOfTheButton }}</button>
-  </form>
+     </form>
+
 </template>
 
 <script>
+
     export default {
         props: ["buttonLabel"],
         data() {
@@ -28,12 +30,15 @@
             register() {
             	 this.$http.post('participants', this.user)
             	     .then(response => {
-            	         // uda≥o siÍ
+            	         // udaÔøΩo siÔøΩ
             	     })
             	     .catch(response => {
-            	         // nie uda≥o sie     
+            	     alert("Sorry, but user with this name already exists");
+
             	     });
             	}
         }
     };
 </script>
+
+
