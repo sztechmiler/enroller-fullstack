@@ -33,6 +33,7 @@ public class MeetingRestController {
             foundParticipant = participantService.findByLogin(participantLogin);
         }
         Collection<Meeting> meetings = meetingService.findMeetings(title, description, foundParticipant, sortMode);
+        System.out.println(meetings.size());
         return new ResponseEntity<Collection<Meeting>>(meetings, HttpStatus.OK);
     }
 
@@ -55,6 +56,7 @@ public class MeetingRestController {
             return new ResponseEntity<String>("Unable to add. A meeting with title " + meeting.getTitle() + " and date "
                     + meeting.getDate() + " already exist.", HttpStatus.CONFLICT);
         }
+
         meetingService.add(meeting);
         return new ResponseEntity<>(meeting, HttpStatus.CREATED);
     }
@@ -82,7 +84,7 @@ public class MeetingRestController {
             return new ResponseEntity<String>("Unable to find participant login in the request body",
                     HttpStatus.BAD_REQUEST);
         }
-
+        System.out.println("dodano uczestnika");
         Participant participantToAdd = participantService.findByLogin(login);
         currentMeeting.addParticipant(participantToAdd);
         meetingService.update(currentMeeting);
