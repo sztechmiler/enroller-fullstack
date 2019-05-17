@@ -45,6 +45,7 @@ public class MeetingRestController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteMeeting(@PathVariable("id") long id) {
+    	System.out.println("I am deleteing meeting with ID: " + id);
         Meeting meeting = meetingService.findById(id);
         meetingService.delete(meeting);
         return new ResponseEntity<Meeting>(meeting, HttpStatus.NO_CONTENT);
