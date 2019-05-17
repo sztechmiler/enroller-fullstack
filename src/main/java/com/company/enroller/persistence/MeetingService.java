@@ -35,6 +35,9 @@ public class MeetingService {
     }
 
     public Collection<Meeting> findMeetings(String title, String description, Participant participant, String sortMode) {
+//    	String hql1 = "FROM Meeting";
+//    	Query query2 = this.session.createQuery(hql1);
+//    	return query2.list();
         String hql = "FROM Meeting as meeting WHERE title LIKE :title AND description LIKE :description ";
         if (participant!=null) {
             hql += " AND :participant in elements(participants)";
