@@ -26,13 +26,33 @@
         props: ['username'],
         data() {
             return {
-                meetings: []
+                meetings: [],
+                meetingslist: []
             };
         },
+        created(){
+        	this.fetchMeetings()
+        
+        },
+        
         methods: {
+        	fetchMeetings(){
+        	this.$http.get('meetings')
+                     .then(response => {
+                         this.meetings = response.body;
+                         //console.log(this.meetings);
+                         // udało się
+                     })
+                     .catch(response => {
+                          console.log("nie udało się");
+                         // nie udało sie
+                     });
+        	
+        	},
+        	
             addNewMeeting(meeting) {
                 this.meetings.push(meeting);
-                console.log(meeting);
+                //console.log(meeting);
                 this.$http.post('meetings', meeting)
                      .then(response => {
                          // udało się
@@ -41,25 +61,17 @@
                          // nie udało sie
                      });
 
-                this.$http.get('meetings')
-                     .then(response => {
-                         console.log(response);
-                         // udało się
-                     })
-                     .catch(esponse => {
-                          console.log("nie udało się");
-                         // nie udało sie
-                     });
+                this.fetchMeetings()
 
 
             },
             addMeetingParticipant(meeting) {
                 meeting.participants.push(this.username);
 
-                this.$http.post('meetings/'+1+'/participants', {login:this.username, password:""})
+                this.$http.post('meetings/'+ meeting.id +'/participants', {login:this.username})
                      .then(response => {
                          console.log("udało się zapisac");
-                         // udało się
+                          this.fetchMeetings()
                      })
                      .catch(response => {
                           console.log("nie udało się zapisac");
@@ -69,23 +81,29 @@
             },
             removeMeetingParticipant(meeting) {
                 meeting.participants.splice(meeting.participants.indexOf(this.username), 1);
-
-
+                
+                this.$http.delete('meetings/'+ meeting.id + '/participants/' + this.username)
+                     .then(response => {
+                         console.log("udało się zapisac");
+                          this.fetchMeetings()
+                     })
+                     .catch(response => {
+                          console.log("nie udało się zapisac");
+                         // nie udało sie
+                     });
 
             },
             deleteMeeting(meeting) {
-                this.meetings.splice(this.meetings.indexOf(meeting), 1);
-                 this.$http.delete('meetings/'+this.meetings.splice(this.meetings.indexOf(meeting), 1), meeting)
-                     .then(response => {
-                         console.log("usunieto spotkanie");
-                         console.log("id to: " + this.meetings.splice(this.meetings.indexOf(meeting), 1));
-                         // udało się
-                     })
-                     .catch(response => {
-                          console.log("nie udało się usunac spotkania");
-                          console.log("id to: " + this.meetings.splice(this.meetings.indexOf(meeting), 1));
-                         // nie udało sie
-                     });
+            	this.meetings.splice(this.meetings.indexOf(meeting),1);
+                console.log(meeting);
+                this.$http.delete('meetings/'+ meeting.id)
+                .then(response => {
+                console.log("usunietyy!");
+                })
+                .catch(response=>{
+                console.log("jakis blad w usuwaniu");
+                });
+                
             }
         }
     }
